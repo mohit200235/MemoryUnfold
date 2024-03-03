@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/transparent"
+    android:padding="0dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_15sdp"
+        android:padding="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_red_corners">
+
+            <TextView
+                android:id="@+id/text_for_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:text="Give me a specific details to your new memory"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp" />
+
+
+            <TextView
+                android:id="@+id/text1_for_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_below="@+id/text_for_dialog"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:text="Name of your new Memory*"
+                android:padding="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <EditText
+                android:id="@+id/Name1OfMemoryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/text1_for_dialog"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/white_plain_background"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:focusable="true"
+                android:gravity="center"
+                android:textSize="@dimen/_12sdp"
+                android:hint="Name*" />
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Name1OfMemoryEditText"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:text="Name should be similar (example Happy birthday to you)*"
+                android:padding="@dimen/_8sdp"
+                android:textColor="#FFC107"
+                android:textAlignment="center"
+                android:textSize="@dimen/_8sdp" />
+
+
+            <TextView
+                android:id="@+id/text2_for_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text3"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:text="Number of Cards you want to create in this memory*"
+                android:padding="@dimen/_8sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
+
+
+            <EditText
+                android:id="@+id/Name2OfMemoryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/text2_for_dialog"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:maxLength="1"
+                android:inputType="number"
+                android:textSize="@dimen/_12sdp"
+                android:background="@drawable/white_plain_background"
+                android:focusable="true"
+                android:gravity="center"
+                android:hint="Number of Cards(1-5)*" />
+
+
+            <Button
+                android:id="@+id/CreateMemory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Name2OfMemoryEditText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:text="CREATE" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

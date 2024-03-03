@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <item
+        android:title="App info"
+        android:id="@+id/AppInfo"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:title="Privacy Policy"
+        android:id="@+id/PrivacyPolicy"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:title="Contact Us"
+        android:id="@+id/ContactUs"
+        />
+
+    <item
+        android:title="Feedback"
+        android:id="@+id/Feedback"
+        />
+</menu>

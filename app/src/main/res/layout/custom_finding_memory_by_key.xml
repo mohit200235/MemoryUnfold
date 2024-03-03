@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Enter the valid key you received while sending your memory ..!"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/design_default_color_error"
+        android:layout_marginHorizontal="@dimen/_20sdp"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:id="@+id/EnterKey"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:hint="Enter valid key .."
+        android:paddingHorizontal="@dimen/_10sdp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:id="@+id/SearchButton"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="@drawable/custom_alert_dialog_background"
+        android:layout_marginHorizontal="@dimen/_20sdp"/>
+
+
+</LinearLayout>

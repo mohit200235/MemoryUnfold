@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
+        android:elevation="15dp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/view_relative_layout"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#77808080"
+            >
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:id="@+id/top"
+                android:paddingTop="@dimen/_20sdp"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/png_image"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_below="@+id/top"
+                android:background="@drawable/corners"
+                android:layout_height="@dimen/_220sdp">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/animation_view"
+                    app:lottie_rawRes="@raw/celeberation"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"/>
+
+
+                <TextView
+                android:id="@+id/name_of_memory"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="@dimen/_50sdp"
+                android:paddingTop="@dimen/_20sdp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="bottom|center"
+                android:padding="4dp"
+                android:layout_centerHorizontal="true"
+                android:text="Happy \nBirthday\nNikki"
+                android:textColor="@color/red3"
+                android:textSize="@dimen/_40ssp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_of_memory"
+                android:padding="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/red1"
+                android:gravity="end"
+                android:layout_centerHorizontal="true"
+                android:text="I wish you luck and all the best as you move forward in life and pursue your goals."
+                android:fontFamily="@font/roboto_medium"
+                />
+
+            </RelativeLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25sdp"
+                android:text="Here's a your small gift for you "
+                android:textSize="@dimen/_8ssp"
+                android:id="@+id/btn"
+                android:drawableEnd="@drawable/baseline_arrow_forward_ios_24"
+                android:background="@drawable/background_butto_ew"
+                />
+
+
+<!--            <com.airbnb.lottie.LottieAnimationView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/animation_view"-->
+<!--                app:lottie_rawRes="@raw/celeberation"-->
+<!--                app:lottie_autoPlay="true"-->
+<!--                app:lottie_loop="true"/>-->
+
+
+            <ImageView
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/gift_down"
+                />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

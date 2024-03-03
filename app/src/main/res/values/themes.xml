@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MemoriesUnfold" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/red1</item>
+        <item name="colorAccent">@color/red1</item>
+<item name="colorPrimaryVariant">@color/red1</item>
+        <item name="android:textColorSecondary">@color/white</item>
+
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:windowAnimationStyle">@style/AlertDialogAnimation</item>
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="AlertDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+<!--    <style name="MyDarkToolbarStyle" parent="ThemeOverlay.AppCompat.Light">-->
+<!--        <item name="android:colorBackground">@color/white</item>-->
+<!--        <item name="android:textColor">@color/white</item>-->
+<!--    </style>-->
+<!--    <style name="Theme.MemoriesUnfold" parent="Base.Theme.MemoriesUnfold" />-->
+</resources>

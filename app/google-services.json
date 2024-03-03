@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "258311467949",
+    "project_id": "memoriesunfold-9e53e",
+    "storage_bucket": "memoriesunfold-9e53e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258311467949:android:6101fbcee290b1993aa724",
+        "android_client_info": {
+          "package_name": "com.example.memoriesunfold"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzFZZn72F9p2Ml-yhYjwHh_f6kj2jZXvU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
