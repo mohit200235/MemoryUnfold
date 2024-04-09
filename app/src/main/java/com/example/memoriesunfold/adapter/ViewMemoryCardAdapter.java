@@ -23,7 +23,6 @@ public class ViewMemoryCardAdapter extends RecyclerView.Adapter<ViewMemoryCardAd
 
     Context context;
     ArrayList<NewMemoryCreateData> newMemoryCreateDataArrayList;
-    Animation animation_zoom_out;
 
     public interface OnItemLongClickListener {
         void onItemLongClick(int position);
