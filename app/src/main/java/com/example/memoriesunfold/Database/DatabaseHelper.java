@@ -13,7 +13,6 @@ import com.example.memoriesunfold.model.DataMemoryModel;
 import com.example.memoriesunfold.model.DataMemoryModelView;
 import com.example.memoriesunfold.model.NewMemoryCreateData;
 
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,9 +54,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 // Execute this query in your onCreate() method
         sqLiteDatabase.execSQL(createImageUrlTable);
-//        String create_table2 = "create table " + CREATE_MEMORY_DATA_TABLE + "(id_data Integer PRIMARY KEY AutoIncrement ,image BLOB,date TEXT,description TEXT)";
-
-//        String create_table2 = "create table " + CREATE_MEMORY_DATA_TABLE + "(id_data Integer PRIMARY KEY AutoIncrement ,image BLOB,date TEXT,description TEXT)";
         sqLiteDatabase.execSQL(create_table);
         sqLiteDatabase.execSQL(create_table2);
 
@@ -125,7 +121,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(memory_id)}
         );
 
-//        Log.d("TAGdelete", "deleteData: " + i + " from CREATE_MEMORY_TABLE, " + j + " from CREATE_MEMORY_DATA_TABLE");
 
         // Return true if at least one deletion was successful
         return i > 0;
@@ -146,7 +141,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean AddMemoryData(int memory_id, ArrayList<DataMemoryModel> memoryModels) {
 
-//        ArrayList arrayList = new ArrayList();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         for (DataMemoryModel model : memoryModels) {
@@ -168,7 +162,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean AddMemoryDataWithImageUrl(int memory_id, ArrayList<DataMemoryModelView> memoryModelViews) {
 
-//        ArrayList arrayList = new ArrayList();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         for (DataMemoryModelView model : memoryModelViews) {
@@ -271,7 +264,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             int id = model.getId();
 
-            Log.d("id123", "UpdateMemoryData: "+id);
             // Use a parameterized update query with the correct WHERE clause
             int i = sqLiteDatabase.update(
                     CREATE_MEMORY_DATA_TABLE,
@@ -281,10 +273,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             );
 
             if (i < 0) {
-                Log.d("UpdateMemoryData", "Failed to update id_data: " + id);
                 return false;
-            } else {
-                Log.d("UpdateMemoryData", "Successfully updated id_data: " + id);
             }
         }
         return true;

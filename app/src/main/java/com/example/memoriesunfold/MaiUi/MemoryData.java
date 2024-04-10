@@ -51,12 +51,6 @@ public class MemoryData extends AppCompatActivity {
             checkDtaUSingId(id);
         }
 
-//        if (getIntent().hasExtra("passId") && getIntent().getStringExtra("passId").equals("104")) {
-//            passId = getIntent().getStringExtra("passId");
-////            memoryData = new SlideAdapterMemoryData(this, Integer.parseInt(cards), id, passId, dataMemoryModelViewArrayList);
-////            memoryData.setViewPager(viewPager);
-////            viewPager.setAdapter(memoryData);
-//        }
         if (!dataMemoryModelViewArrayList.isEmpty()) {
             memoryData = new SlideAdapterMemoryData(this, Integer.parseInt(cards), id, passId, dataMemoryModelViewArrayList);
         } else {
@@ -64,24 +58,16 @@ public class MemoryData extends AppCompatActivity {
         }
         memoryData.setViewPager(viewPager);
         viewPager.setAdapter(memoryData);
-        return;
-
-//
-//        memoryData = new SlideAdapterMemoryData(this,Integer.parseInt(cards),id,dataMemoryModelArrayList);
-//        memoryData.setViewPager(viewPager);
-//        viewPager.setAdapter(memoryData);
     }
 
     private void checkDtaUSingId(int id) {
 
         if (!databaseHelper.getDataByMemoryId(id).isEmpty()) {
             dataMemoryModelArrayList = databaseHelper.getDataByMemoryId(id);
-            Log.d("code", "checkDtaUSingId: " + dataMemoryModelArrayList);
             return;
         }
         if (!databaseHelper.getDataByMemoryIdWithImageUrl(id).isEmpty()) {
             dataMemoryModelViewArrayList = databaseHelper.getDataByMemoryIdWithImageUrl(id);
-            Log.d("code12", "checkDtaUSingId: " + dataMemoryModelViewArrayList);
         }
 
     }

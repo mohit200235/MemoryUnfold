@@ -23,8 +23,6 @@ import android.widget.Toast;
 import com.example.memoriesunfold.Database.DatabaseHelper;
 import com.example.memoriesunfold.R;
 import com.example.memoriesunfold.adapter.AddMemoryCardAdapter;
-import com.example.memoriesunfold.adapter.SlideAdapterMemoryData;
-import com.example.memoriesunfold.model.DataMemoryModel;
 import com.example.memoriesunfold.model.NewMemoryCreateData;
 
 import java.util.ArrayList;
@@ -67,7 +65,6 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
         //check how data shows us from database
         if (!databaseHelper.ShowMemory().isEmpty()) {
             fetchMemoryDataFromDatabase();
-//            slideAdapterMemoryData = new SlideAdapterMemoryData(id);
         }
 
 
@@ -79,7 +76,6 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
         loadingDialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         loadingDialog.setCancelable(false);
         loadingDialog.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
-//        loadingDialog.show();
 
 
         //create dialog for asking name of the frame
@@ -118,10 +114,7 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
 
                     //save data using model class and poass to adapter
                     newMemoryCreateDataList.add(new NewMemoryCreateData(name, number));
-
-//                    memoryTextList.add(name);
                     CardsNumbers.add(Integer.valueOf(number));
-//                    NumberOfCards = Integer.parseInt(number);
 
                     //insert in database here
                     InsertNewMemory(name, Integer.parseInt(number));
@@ -158,8 +151,6 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
             ArrayList<ArrayList<NewMemoryCreateData>> memoryArrayList = databaseHelper.ShowMemory();
             ArrayList<NewMemoryCreateData> updatedList = new ArrayList<>(); // Temporary list for updated data
 
-            Log.d("TAGmemory", "populateData: "+memoryArrayList );
-
             for (ArrayList<NewMemoryCreateData> memoryList : memoryArrayList) {
                 for (NewMemoryCreateData newMemoryCreateData : memoryList) {
 
@@ -188,37 +179,7 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
                     addMemoryCardAdapter.notifyDataSetChanged();
                 }
             }
-//        ArrayList arrayList = databaseHelper.ShowMemory();
-//
-//        for (int i = 0; i < arrayList.size(); i++) {
-//            ArrayList arrayList1 = (ArrayList) arrayList.get(i);
-//
-//            NewMemoryCreateData newMemoryCreateData = (NewMemoryCreateData) arrayList1.get(0);
-//            newMemoryCreateDataList.add(newMemoryCreateData);
-//
-////            loadIdListFromSharedPreferences();
-//
-//            //set adapter
-//            addMemoryCardAdapter = new AddMemoryCardAdapter(AddNewMemory.this, newMemoryCreateDataList);
-//            Log.d("TAG1235", "fetchMemoryDataFromDatabase: " + newMemoryCreateDataList + "\n" + arrayList + "\n" + arrayList1);
-//            recyclerViewAddMemory.setAdapter(addMemoryCardAdapter);
-//            addMemoryCardAdapter.setOnItemClickListener(AddNewMemory.this);
-//            addMemoryCardAdapter.setOnItemLongClickListener(AddNewMemory.this);
         }
-
-    private void loadIdListFromSharedPreferences() {
-        idlist.clear(); // Clear the list before loading
-        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String idListString = preferences.getString("idList", "");
-
-        if (!TextUtils.isEmpty(idListString)) {
-            String[] idArray = idListString.split(",");
-            for (String id : idArray) {
-                idlist.add(Integer.parseInt(id));
-                Log.d("TAG11", "loadIdListFromSharedPreferences: "+idlist);
-            }
-        }
-    }
 
     private void InsertNewMemory(String name1, int number1) {
 
@@ -228,10 +189,8 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
             idlist.add((int) l);
             saveIdListToSharedPreferences();
         }
-        Log.d("idcheck", "InsertNewMemory: "+idlist);
         if (l>0){
             fetchMemoryDataFromDatabase();
-            Log.d("TAGindia2", "InsertNewMemory: "+newMemoryCreateDataList);
             Toast.makeText(this, "memory created successfully", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
@@ -243,7 +202,6 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("idList", TextUtils.join(",", idlist));
-        Log.d("TAG12", "saveIdListToSharedPreferences: "+idlist);// Convert list to comma-separated string
         editor.apply();
     }
 
