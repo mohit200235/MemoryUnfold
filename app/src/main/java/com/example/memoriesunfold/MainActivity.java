@@ -10,12 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,7 +25,6 @@ import android.widget.Toast;
 import com.example.memoriesunfold.Database.DatabaseHelper;
 import com.example.memoriesunfold.MaiUi.AddNewMemory;
 import com.example.memoriesunfold.MaiUi.MemoryData;
-import com.example.memoriesunfold.adapter.SlideAdapterMemoryData;
 import com.example.memoriesunfold.databinding.ActivityMainBinding;
 import com.example.memoriesunfold.fragments.Home;
 import com.example.memoriesunfold.fragments.SavedMemories;
@@ -40,8 +35,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().hide();
-
-//        search = binding.searchIcon;
         databaseHelper = new DatabaseHelper(this);
 
         //loading Dialog
@@ -213,38 +203,26 @@ public class MainActivity extends AppCompatActivity {
             });
         } else {
             loadingDialog.dismiss();
-            Toast.makeText(this, "check internet conections", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "check your internet connections", Toast.LENGTH_SHORT).show();
         }
     }
 
-        public void parseMemoryData(Object memoryData, String MyKey) {
-//        Log.d("key12345", "parseMemoryData: "+memoryData);
-        if(isNetworkAvailable(MainActivity.this)) {
+    public void parseMemoryData(Object memoryData, String MyKey) {
+        if (isNetworkAvailable(MainActivity.this)) {
             try {
                 JSONObject memoryOject = new JSONObject((Map) memoryData);
                 JSONObject getAllData = memoryOject.getJSONObject("Memories");
-//                Log.d("key1234", "parseMemoryData: "+getAllData);
                 if (getAllData.has(MyKey)) {
                     JSONObject filteredByKey = getAllData.getJSONObject(MyKey);
                     SearchDailog.dismiss();
-                    Log.d("key1234561", "parseMemoryData: "+filteredByKey);
-
                     List<JSONObject> dataMemoryModelList = new ArrayList<>();
 
                     JSONArray DataMemoryModels = filteredByKey.getJSONArray("DataMemoryModels");
-                    Log.d("key123456", "parseMemoryData: "+DataMemoryModels);
-                    for (int i  = 1 ; i  < DataMemoryModels.length() ; i++){
-//                        dataMemoryModelList.add((JSONObject) DataMemoryModels.get(i));
-                        Log.d("key1234567", "parseMemoryData: "+DataMemoryModels.get(i));
+                    for (int i = 1; i < DataMemoryModels.length(); i++) {
                         dataMemoryModelList.add((JSONObject) DataMemoryModels.get(i));
                     }
-//                    Log.d("key123456", "parseMemoryData: "+DataMemoryModels);
-
-
                     //get details from this ad call the adapter ad everythig ...
                     JSONObject NewMemoryCreateData = filteredByKey.getJSONObject("NewMemoryCreateData");
-
-
                     covertJsonIntoDataMemory(dataMemoryModelList, NewMemoryCreateData);
                 } else {
                     SearchDailog.dismiss();
@@ -253,47 +231,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 loadingDialog.dismiss();
-                Log.d("key1234", "parseMemoryData: "+e);
-                Toast.makeText(this, "error occurred"+e, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "error occurred" + e, Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             loadingDialog.dismiss();
             Toast.makeText(this, "check internet connections", Toast.LENGTH_SHORT).show();
         }
     }
-//    public void parseMemoryData(Object memoryData, String MyKey) {
-//        try {
-//            JSONObject memoryObject = new JSONObject((Map) memoryData);
-//            JSONObject allMemories = memoryObject.getJSONObject("Memories");
-//            Log.d("key1234", "parseMemoryData: "+allMemories);
-//
-//            if (allMemories.has(MyKey)) {
-//                JSONObject memoryItem = allMemories.getJSONObject(MyKey);
-//                JSONArray dataMemoryModelsArray = memoryItem.getJSONArray("DataMemoryModels");
-//                JSONObject newMemoryCreateData = memoryItem.getJSONObject("NewMemoryCreateData");
-//
-//                List<JSONObject> dataMemoryModelList = new ArrayList<>();
-//
-//                for (int i = 0; i < dataMemoryModelsArray.length(); i++) {
-//                    JSONObject innerJsonObject = ((JSONArray) dataMemoryModelsArray).optJSONObject(i);
-//                    if (innerJsonObject != null) {
-//                        dataMemoryModelList.add(innerJsonObject);
-//                    }
-//                }
-//
-//                SearchDailog.dismiss();
-//                covertJsonIntoDataMemory(dataMemoryModelList, newMemoryCreateData);
-//            } else {
-//                SearchDailog.dismiss();
-//                loadingDialog.dismiss();
-//                Toast.makeText(this, "No memory exists, please check your key again", Toast.LENGTH_SHORT).show();
-//            }
-//        } catch (JSONException e) {
-//            loadingDialog.dismiss();
-//            Log.d("key1234", "parseMemoryData: " + e);
-//            Toast.makeText(this, "Error occurred" + e, Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     public void covertJsonIntoDataMemory(List<JSONObject> jsonList, JSONObject NewMemoryCreateData) throws JSONException {
         ArrayList<DataMemoryModelView> dataMemoryModelList = new ArrayList<>();
@@ -304,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
         int memory_id_ = NewMemoryCreateData.getInt("id");
         for (JSONObject jsonObject : jsonList) {
             try {
-//                loadingDialog.dismiss();
                 Iterator<String> keys = jsonObject.keys();
                 while (keys.hasNext()) {
                     String key = keys.next();
@@ -314,39 +257,12 @@ public class MainActivity extends AppCompatActivity {
                     int id = innerJsonObject.getInt("id");
                     int memoryId = innerJsonObject.getInt("memory_id");
                     String imageString = innerJsonObject.getString("image");
-                    Log.d("imageStri", "covertJsonIntoDataMemory: " + imageString);
                     String date = innerJsonObject.getString("date");
                     String description = innerJsonObject.getString("description");
 
                     DataMemoryModelView dataMemoryModelView = new DataMemoryModelView(id, memoryId, imageString, date, description);
 
                     dataMemoryModelList.add(dataMemoryModelView);
-//                    final byte[][] imageByteArray = {null};
-
-//                    imageFetchCounter.incrementAndGet();
-//                    fetchImageFromFirebaseStorage(imageString, new ImageDataCallback() {
-//                        @Override
-//                        public void onImageDataReceived(byte[] imageData) {
-//                            byte[] imageByteArray = imageData;
-//                            Log.d("byte", "onImageDataReceived: "+imageByteArray);
-//                            // Create a DataMemoryModel object
-//                            DataMemoryModel dataMemoryModel = new DataMemoryModel(id, memoryId, imageByteArray, date, description);
-//                            // Add the DataMemoryModel to the list
-//                            dataMemoryModelList.add(dataMemoryModel);
-////                            saveByteArray(imageData);
-//                            // Check if all image fetch tasks are completed
-//                            if (imageFetchCounter.get() == jsonList.size()) {
-//                                // All images fetched, proceed with further processing
-//                                handleDataMemoryList(dataMemoryModelList, cards, memory_id_,memoryname);
-//                            }
-//                        }
-//                    });
-
-//                    DataMemoryModel dataMemoryModel = new DataMemoryModel(id, memoryId, imageByteArray, date, description);
-//                            // Add the DataMemoryModel to the list
-//                            dataMemoryModelList.add(dataMemoryModel);
-
-//                    byte[] imageByteArray = convertImageUriToByteArray1(this, Uri.parse(imageString));
                 }
                 handleDataMemoryList(dataMemoryModelList, cards, memory_id_, memoryname);
             } catch (JSONException e) {
@@ -391,29 +307,7 @@ public class MainActivity extends AppCompatActivity {
 //        intent.putExtra("datamemoryModelViewList", dataMemoryModelViewList);
         loadingDialog.dismiss();
         startActivity(intent);
-
-//        SlideAdapterMemoryData slideAdapterMemoryData = new SlideAdapterMemoryData(this,Integer.parseInt(cards),memory_id_,dataMemoryModelList);
-        Log.d("code1", "covertJsonIntoDataMemory: " + l + dataMemoryModelViewList);
-
     }
-
-//    private void  saveByteArray(byte[] imageData) {
-//        Log.d("byte", "saveByteArray: "+ Arrays.toString(imageData));
-//    }
-
-
-//    private byte[] convertImageUriToByteArray1(Context context, Uri imageUri) throws IOException {
-//        InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
-//
-//        if (inputStream != null) {
-//            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
-//            return byteArrayOutputStream.toByteArray();
-//        }
-//
-//        return null;
-//    }
 
     public boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -423,62 +317,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-//    public void fetchImageFromFirebaseStorage(String imageUrl, ImageDataCallback callback) {
-//        new AsyncTask<String, Void, byte[]>() {
-//            @Override
-//            protected byte[] doInBackground(String... params) {
-//                String downloadUrl = params[0];
-//                try {
-//                    URL url = new URL(downloadUrl);
-//                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//                    connection.connect();
-//
-//                    InputStream inputStream = connection.getInputStream();
-//
-//                    // Read the input stream
-//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                    byte[] buffer = new byte[1024];
-//                    int bytesRead;
-//
-//                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-//                        byteArrayOutputStream.write(buffer, 0, bytesRead);
-//                    }
-//
-//                    // Close streams and connection
-//                    inputStream.close();
-//                    byteArrayOutputStream.close();
-//                    connection.disconnect();
-//
-//                    return byteArrayOutputStream.toByteArray();
-//                } catch (IOException e) {
-//                    Log.e("FirebaseStorage", "Error fetching image: " + e.getMessage());
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(byte[] result) {
-//                // Pass the fetched byte array through the callback
-//                if (result != null) {
-//                    callback.onImageDataReceived(result);
-//                } else {
-//                    // Handle the case where fetching the image failed
-//                }
-//            }
-//        }.execute(imageUrl);
-//    }
-
-
-//    private Bitmap convertImageByteArrayToBitmap(byte[] imageBytes) {
-//        // Convert byte array to Bitmap if needed
-//        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-//    }
-
-
-    public interface ImageDataCallback {
-        void onImageDataReceived(byte[] imageData);
-    }
-
 }
 
