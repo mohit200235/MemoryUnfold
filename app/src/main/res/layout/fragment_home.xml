@@ -6,13 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.Home">
 
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_marginTop="@dimen/_5sdp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/dashboardRecyclerView"/>-->
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
     <com.denzcoskun.imageslider.ImageSlider
         android:id="@+id/image_slider"
         android:layout_width="wrap_content"
@@ -23,4 +21,17 @@
         app:iss_delay="1000"
         app:iss_text_align="CENTER"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="15dp"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textColor="@color/cardview_shadow_start_color"
+        android:textStyle="bold"
+        android:text="If You have any memory keys,\n Search that key in Search icon."
+        />
+    </LinearLayout>
 </FrameLayout>
