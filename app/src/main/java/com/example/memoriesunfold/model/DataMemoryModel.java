@@ -98,17 +98,6 @@ public class DataMemoryModel implements Parcelable {
         parcel.writeString(Description);
     }
 
-//    @Override
-//    public String toString() {
-//        return "DataMemoryModel{" +
-//                "id=" + id +
-//                ", memory_id=" + memory_id +
-//                ", image=" + Arrays.toString(image) +
-//                ", Date='" + Date + '\'' +
-//                ", Description='" + Description + '\'' +
-//                '}';
-//    }
-
     @Override
     public String toString() {
         return "DataMemoryModel{" +
