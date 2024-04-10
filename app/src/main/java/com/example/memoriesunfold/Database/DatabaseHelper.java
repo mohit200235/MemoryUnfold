@@ -19,7 +19,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Memory_Unfold.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String CREATE_MEMORY_TABLE = "createMemory";
     public static final String CREATE_MEMORY_DATA_TABLE = "memoryData";
     public static final String CREATE_MEMORY_DATA_URL_TABLE = "memoryDataUrl";
@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String create_table = "create table " + CREATE_MEMORY_TABLE + "(id Integer PRIMARY KEY AutoIncrement ,name TEXT,number TEXT)";
+        String create_table = "create table " + CREATE_MEMORY_TABLE + "(id Integer PRIMARY KEY AutoIncrement ,name TEXT,number TEXT,isSend number)";
 
         // Add a foreign key to the memoryData table that references the createMemory table
         String create_table2 = "CREATE TABLE " + CREATE_MEMORY_DATA_TABLE +
@@ -69,14 +69,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public long CreateNewMemory(String name, int number) {
+    public long CreateNewMemory(String name, int number,int isSend) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("number", number);
+        values.put("isSend",isSend);
         long l = sqLiteDatabase.insert(CREATE_MEMORY_TABLE, null, values);
 
         return l;
+    }
+
+    public boolean updateMemory(int memory_id,int isSend){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("isSend",isSend);
+
+            int id = memory_id;
+
+            // Use a parameterized update query with the correct WHERE clause
+            int i = sqLiteDatabase.update(
+                    CREATE_MEMORY_TABLE,
+                    contentValues,
+                    "id = ?"  ,
+                    new String[]{String.valueOf(id)}
+            );
+
+            if (i < 0) {
+                return false;
+            }
+        return true;
     }
 
     public ArrayList ShowMemory() {
@@ -92,8 +115,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 String number = cursor.getString(2);
+                int isSend =cursor.getInt(3);
 
-                NewMemoryCreateData newMemoryCreateData = new NewMemoryCreateData(id, name, number);
+                NewMemoryCreateData newMemoryCreateData = new NewMemoryCreateData(id, name, number,isSend);
 
                 arrayList.add(newMemoryCreateData);
                 al.add(arrayList);

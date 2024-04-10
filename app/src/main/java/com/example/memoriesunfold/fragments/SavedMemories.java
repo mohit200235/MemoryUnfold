@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.memoriesunfold.Database.DatabaseHelper;
 import com.example.memoriesunfold.MaiUi.MemoryData;
+import com.example.memoriesunfold.MainActivity;
 import com.example.memoriesunfold.R;
 import com.example.memoriesunfold.adapter.ViewMemoryCardAdapter;
 import com.example.memoriesunfold.model.DataMemoryModel;
@@ -123,44 +124,63 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
 
     @Override
     public void onItemClick(int position) {
-        loadingDialog.show();
+        //check for already send the data to server or not ...
+        if(newMemoryCreateDataList.get(position).isSend() == 0) {
+            //means not send the data to sever
 
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+            loadingDialog.show();
 
-                loadingDialog.dismiss();
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Check!");
-                builder.setMessage("This Memory is not send still, Do you want to send this?");
-                builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // here set method for send the data to server and delete this memory from database by delete query set
-                        //delete this data here
-                        loadingDialog.show();
-                        tryFirebaseSaveImage(position);
-                    }
-                });
-                builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    loadingDialog.dismiss();
 
-                        Intent intent = new Intent(getActivity(), MemoryData.class);
-                        intent.putExtra("card", newMemoryCreateDataList.get(position).getNumber());
-                        intent.putExtra("id", newMemoryCreateDataList.get(position).getId());
-                        startActivity(intent);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Check!");
+                    builder.setMessage("This Memory is not send still, Do you want to send this?");
+                    builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // here set method for send the data to server and delete this memory from database by delete query set
+                            //delete this data here
+                            loadingDialog.show();
+                            tryFirebaseSaveImage(position);
+                        }
+                    });
+                    builder.setNegativeButton("Edit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-                    }
-                });
-                builder.show();
+                            Intent intent = new Intent(getActivity(), MemoryData.class);
+                            intent.putExtra("card", newMemoryCreateDataList.get(position).getNumber());
+                            intent.putExtra("id", newMemoryCreateDataList.get(position).getId());
+                            startActivity(intent);
 
-            }
-        };
+                        }
+                    });
+                    builder.show();
 
-        handler.postDelayed(runnable, 2000);
+                }
+            };
+
+            handler.postDelayed(runnable, 2000);
+        }else if(newMemoryCreateDataList.get(position).isSend() == 1){
+            loadingDialog.show();
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    loadingDialog.dismiss();
+                    Intent intent = new Intent(getActivity(), MemoryData.class);
+                    intent.putExtra("card", newMemoryCreateDataList.get(position).getNumber());
+                    intent.putExtra("id", newMemoryCreateDataList.get(position).getId());
+                    startActivity(intent);
+                }
+            };
+            handler.postDelayed(runnable,1200);
+        }
     }
 
     private void sendDataToServerFinalMethod(int position, List<String> downloadUrls) {
@@ -198,7 +218,15 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
         if (isNetworkAvailable(getActivity())) {
             databaseReference.child("Memories").child(key).setValue(memoryDataMap);
             loadingDialog.dismiss();
-            Toast.makeText(getActivity(), "Data send successfully", Toast.LENGTH_SHORT).show();
+            //set the isSend data to 1
+            boolean is = databaseHelper.updateMemory(newMemoryCreateDataList.get(position).getId(),1);
+            if (is){
+                Toast.makeText(getActivity(), "Data send successfully", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getActivity(), "Data send successfully 0", Toast.LENGTH_SHORT).show();
+            }
+            Intent i = new Intent(getActivity(), MainActivity.class);
+            getActivity().startActivity(i);
         } else {
             loadingDialog.dismiss();
             Toast.makeText(getActivity(), "check internet connections", Toast.LENGTH_SHORT).show();

@@ -1,17 +1,18 @@
 package com.example.memoriesunfold.model;
 
-import java.util.ArrayList;
-
 public class NewMemoryCreateData {
 
     int id;
     private String name;
     private String number;
 
-    public NewMemoryCreateData(int id,String name, String number) {
+    private int isSend;
+
+    public NewMemoryCreateData(int id,String name, String number,int isSend) {
         this.id=id;
         this.name = name;
         this.number = number;
+        this.isSend = isSend;
     }
 
     public NewMemoryCreateData(){}
@@ -43,6 +44,14 @@ public class NewMemoryCreateData {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public int isSend() {
+        return isSend;
+    }
+
+    public void setSend(int send) {
+        isSend = send;
     }
 
     @Override

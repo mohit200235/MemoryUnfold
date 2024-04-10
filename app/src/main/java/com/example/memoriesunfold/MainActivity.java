@@ -242,9 +242,10 @@ public class MainActivity extends AppCompatActivity {
     public void covertJsonIntoDataMemory(List<JSONObject> jsonList, JSONObject NewMemoryCreateData) throws JSONException {
         ArrayList<DataMemoryModelView> dataMemoryModelList = new ArrayList<>();
         String cards = (String) NewMemoryCreateData.get("number");
-        AtomicInteger imageFetchCounter = new AtomicInteger(jsonList.size());
+//        AtomicInteger imageFetchCounter = new AtomicInteger(jsonList.size());
 
         String memoryname = (String) NewMemoryCreateData.get("name");
+        int isSend = NewMemoryCreateData.getInt("isSend");
         int memory_id_ = NewMemoryCreateData.getInt("id");
         for (JSONObject jsonObject : jsonList) {
             try {
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
                     dataMemoryModelList.add(dataMemoryModelView);
                 }
-                handleDataMemoryList(dataMemoryModelList, cards, memory_id_, memoryname);
+                handleDataMemoryList(dataMemoryModelList, cards, memory_id_, memoryname,isSend);
             } catch (JSONException e) {
                 loadingDialog.dismiss();
                 e.printStackTrace();
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleDataMemoryList(ArrayList<DataMemoryModelView> dataMemoryModelViewList, String cards, int memory_id_, String memoryname) {
+    private void handleDataMemoryList(ArrayList<DataMemoryModelView> dataMemoryModelViewList, String cards, int memory_id_, String memoryname,int isSend) {
         if (cards.equals("0")) {
             loadingDialog.dismiss();
             Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -290,8 +291,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        long l = databaseHelper.CreateNewMemory(memoryname, Integer.parseInt(cards));
-//
+        long l = databaseHelper.CreateNewMemory(memoryname, Integer.parseInt(cards),isSend);
+
         boolean addSuccess = databaseHelper.AddMemoryDataWithImageUrl((int) l, dataMemoryModelViewList);
         if (addSuccess) {
             Toast.makeText(this, "Succesfully Added ", Toast.LENGTH_SHORT).show();

@@ -97,6 +97,7 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
             public void onClick(View view) {
                 String name = getNameOFMemoryEditText.getText().toString();
                 String number = NumberOfCardsEditText.getText().toString().trim();
+                int isSend = 0;
                 if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(number)) {
 
 //                    String stringWithLineBreaks = name.replace(" ", "\n");
@@ -117,7 +118,7 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
                     CardsNumbers.add(Integer.valueOf(number));
 
                     //insert in database here
-                    InsertNewMemory(name, Integer.parseInt(number));
+                    InsertNewMemory(name, Integer.parseInt(number),isSend);
 
                     //set adapter
                     addMemoryCardAdapter = new AddMemoryCardAdapter(AddNewMemory.this, newMemoryCreateDataList);
@@ -181,9 +182,9 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
             }
         }
 
-    private void InsertNewMemory(String name1, int number1) {
+    private void InsertNewMemory(String name1, int number1,int isSend) {
 
-        long l  = databaseHelper.CreateNewMemory(name1, number1);
+        long l  = databaseHelper.CreateNewMemory(name1, number1,isSend);
         // Check if the ID is not already in the list before adding
         if (!idlist.contains((int) l)) {
             idlist.add((int) l);

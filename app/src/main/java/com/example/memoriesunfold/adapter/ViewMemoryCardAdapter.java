@@ -67,6 +67,7 @@ public class ViewMemoryCardAdapter extends RecyclerView.Adapter<ViewMemoryCardAd
             @Override
             public void onClick(View view) {
                 if (onItemClickListener!=null){
+
                     onItemClickListener.onItemClick(position);
                 }
             }
