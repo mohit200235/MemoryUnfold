@@ -23,7 +23,6 @@ public class ViewMemoryCardAdapter extends RecyclerView.Adapter<ViewMemoryCardAd
 
     Context context;
     ArrayList<NewMemoryCreateData> newMemoryCreateDataArrayList;
-    Animation animation_zoom_out;
 
     public interface OnItemLongClickListener {
         void onItemLongClick(int position);
@@ -61,18 +60,6 @@ public class ViewMemoryCardAdapter extends RecyclerView.Adapter<ViewMemoryCardAd
         Animation animationZoomIn = AnimationUtils.loadAnimation(context, R.anim.zoom_out);
         holder.text_memory.setAnimation(animationZoomIn);
 
-//        // animation_zoom_out = AnimationUtils.loadAnimation(context, R.anim.zoom_out); // Remove this line
-//        Animation animationZoomOut = new ScaleAnimation(
-//                1.0f, 0.5f, // fromXScale, toXScale
-//                1.0f, 0.5f, // fromYScale, toYScale
-//                Animation.RELATIVE_TO_SELF, 0.5f, // pivotXType, pivotXValue
-//                Animation.RELATIVE_TO_SELF, 0.5f // pivotYType, pivotYValue
-//        );
-//        animationZoomOut.setDuration(1000);
-//        holder.text_memory.setAnimation(animationZoomOut);
-
-//        animation_zoom_out = AnimationUtils.loadAnimation(context,R.anim.zoom_out);
-//        holder.text_memory.setAnimation(animation_zoom_out);
         String stringWithLineBreaks = newMemoryCreateDataArrayList.get(position).getName().replace(" ", "\n");
         holder.text_memory.setText(stringWithLineBreaks);
 

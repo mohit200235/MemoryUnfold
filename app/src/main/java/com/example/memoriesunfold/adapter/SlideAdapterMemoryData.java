@@ -50,8 +50,8 @@ public class SlideAdapterMemoryData extends PagerAdapter {
     ArrayList<DataMemoryModel> updatedArrayList = new ArrayList<>();
     Uri selectedImageUri;
     int Cards;
-    ArrayList<DataMemoryModel> memoryArrayList= new ArrayList<>();
-    ArrayList<DataMemoryModelView> memoryViewArrayList= new ArrayList<>();
+    ArrayList<DataMemoryModel> memoryArrayList = new ArrayList<>();
+    ArrayList<DataMemoryModelView> memoryViewArrayList = new ArrayList<>();
     private ViewPager viewPager;
     int id;
     int id_main;
@@ -59,33 +59,31 @@ public class SlideAdapterMemoryData extends PagerAdapter {
     Dialog loadingDialog;
     List<DataMemoryModel> dataMemoryModelList;
     List<DataMemoryModelView> dataMemoryModelViewList;
+
     public void setViewPager(ViewPager viewPager) {
         this.viewPager = viewPager;
     }
 
-    public SlideAdapterMemoryData(Context context,int cards,int id,List<DataMemoryModel> dataMemoryModelList){
-        this.context=context;
+    public SlideAdapterMemoryData(Context context, int cards, int id, List<DataMemoryModel> dataMemoryModelList) {
+        this.context = context;
         this.Cards = cards;
         this.id = id;
-        this.dataMemoryModelList  =dataMemoryModelList;
+        this.dataMemoryModelList = dataMemoryModelList;
 
         // Initialize memoryArrayList with the provided dataMemoryModelList
         this.memoryArrayList = new ArrayList<>(dataMemoryModelList);
     }
 
-    public SlideAdapterMemoryData(Context context,int cards,int id,String passId , List<DataMemoryModelView> dataMemoryModelViewList){
-        this.context=context;
+    public SlideAdapterMemoryData(Context context, int cards, int id, String passId, List<DataMemoryModelView> dataMemoryModelViewList) {
+        this.context = context;
         this.Cards = cards;
         this.id = id;
-        this.dataMemoryModelViewList  =dataMemoryModelViewList;
+        this.dataMemoryModelViewList = dataMemoryModelViewList;
         this.passId = passId;
 
         // Initialize memoryArrayList sswith the provided dataMemoryModelList
         this.memoryViewArrayList = new ArrayList<>(dataMemoryModelViewList);
     }
-
-
-
 
 
     @Override
@@ -95,20 +93,20 @@ public class SlideAdapterMemoryData extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return (view ==object);
+        return (view == object);
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v=inflater.inflate(R.layout.custom_slide_memory_data,container,false);
+        View v = inflater.inflate(R.layout.custom_slide_memory_data, container, false);
         TextView totalNumber = v.findViewById(R.id.totalNumber);
         ImageView imageView = v.findViewById(R.id.ImageAddNew);
         Button Next = v.findViewById(R.id.next);
         Button edit = v.findViewById(R.id.edit);
         EditText Date = v.findViewById(R.id.Date);
-        EditText description =v.findViewById(R.id.Description);
+        EditText description = v.findViewById(R.id.Description);
         ProgressBar progressBar = v.findViewById(R.id.progressBar);
         LinearLayout layout = v.findViewById(R.id.linearLayout);
         LinearLayout submitDataToServerLinearLayout = v.findViewById(R.id.SubmitDataToServerLinearLayout);
@@ -119,14 +117,10 @@ public class SlideAdapterMemoryData extends PagerAdapter {
         //loading Dialog
         loadingDialog = new Dialog(context);
         loadingDialog.setContentView(R.layout.custom_loadig_dialog);
-//        loadingDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_alert_dialog_background));
-//        int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
         loadingDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         loadingDialog.setCancelable(false);
         loadingDialog.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
-//        loadingDialog.show();
 
-//        Log.d("TAG2551", "instantiateItem: "+getMemoryViewArrayList());
         //upload image and hide the layout and show the imageView
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,16 +133,14 @@ public class SlideAdapterMemoryData extends PagerAdapter {
         String s = pos + "/" + Cards;
         totalNumber.setText(s);
 
-        int cards = (pos*100)/Cards;
+        int cards = (pos * 100) / Cards;
 
         progressBar.setProgress(cards);
-        int progress  = progressBar.getProgress();
-
+        int progress = progressBar.getProgress();
 
 
         //show this whe there exits a saved data inside
-        if (dataMemoryModelList !=null && !dataMemoryModelList.isEmpty()) {
-            Log.d("TAG255", "instantiateItem: "+dataMemoryModelList);
+        if (dataMemoryModelList != null && !dataMemoryModelList.isEmpty()) {
             byte[] image = dataMemoryModelList.get(position).getImage();
             imageView.setVisibility(View.VISIBLE);
             layout.setVisibility(View.INVISIBLE);
@@ -162,7 +154,7 @@ public class SlideAdapterMemoryData extends PagerAdapter {
             if (image != null) {
                 Bitmap bitmap = convertByteArrayToBitmap(image);
                 imageView.setImageBitmap(bitmap);
-            }else{
+            } else {
                 imageView.setImageResource(R.drawable.img);
             }
             Date.setText(dataMemoryModelList.get(position).getDate());
@@ -170,24 +162,13 @@ public class SlideAdapterMemoryData extends PagerAdapter {
             Date.setClickable(false);
             description.setClickable(false);
             Next.setVisibility(View.GONE);
-        }
-        else if (dataMemoryModelViewList != null && !dataMemoryModelViewList.isEmpty()) {
-            Log.d("TAG255", "instantiateItem: "+dataMemoryModelViewList);
+        } else if (dataMemoryModelViewList != null && !dataMemoryModelViewList.isEmpty()) {
             String image = dataMemoryModelViewList.get(position).getImage();
             imageView.setVisibility(View.VISIBLE);
             layout.setVisibility(View.INVISIBLE);
-//            edit.setVisibility(View.VISIBLE);
-//            edit.setOnClickListener(view -> {
-//                imageView.setOnClickListener(view1 -> ImageChosser());
-//                Date.setClickable(true);
-//                description.setClickable(true);
-//                Next.setVisibility(View.VISIBLE);
-//            });
             if (image != null) {
                 Picasso.get().load(image).into(imageView);
-//                Bitmap bitmap = convertByteArrayToBitmap(image);
-//                imageView.setImageBitmap(bitmap);
-            }else{
+            } else {
                 imageView.setImageResource(R.drawable.img);
             }
             Date.setText(dataMemoryModelViewList.get(position).getDate());
@@ -198,19 +179,17 @@ public class SlideAdapterMemoryData extends PagerAdapter {
         }
 
 
-        submitDataToServer.setOnClickListener(view->{
+        submitDataToServer.setOnClickListener(view -> {
             sendDataToServer();
         });
 
 
         //this help to change the next and save based on progress
-        if (progress==100){
+        if (progress == 100) {
             Next.setText("SAVE");
-        }else{
+        } else {
             Next.setText("NEXT");
         }
-
-        Log.d("lost", "instantiateItem: "+getMemoryArrayList());
 
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,7 +197,6 @@ public class SlideAdapterMemoryData extends PagerAdapter {
 
                 String date = Date.getText().toString();
                 String desc = description.getText().toString();
-
 
 
                 //check for edit button click and next cliking functionallity changes
@@ -232,7 +210,7 @@ public class SlideAdapterMemoryData extends PagerAdapter {
 
 
                     id_main = dataMemoryModelList.get(position).getId();
-                    DataMemoryModel updateDataModel = new DataMemoryModel(id_main,id,imageArray,date,desc);
+                    DataMemoryModel updateDataModel = new DataMemoryModel(id_main, id, imageArray, date, desc);
 
                     int pos = viewPager.getCurrentItem();
                     memoryArrayList.set(pos, updateDataModel);
@@ -246,7 +224,6 @@ public class SlideAdapterMemoryData extends PagerAdapter {
                             loadingDialog.dismiss();
                             if (updateSuccess) {
                                 Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show();
-                                Log.d("updatedmemory", "onClick: "+memoryArrayList);
                             } else {
                                 Toast.makeText(context, "Update error", Toast.LENGTH_SHORT).show();
                             }
@@ -255,11 +232,10 @@ public class SlideAdapterMemoryData extends PagerAdapter {
                             } else {
                                 // Send data for future reference
                                 Intent i = new Intent(context, MainActivity.class);
-//                        i.putParcelableArrayListExtra("array", arrayList);
                                 context.startActivity(i);
                             }
                         }
-                    },2000);
+                    }, 2000);
 
 
                 } else {
@@ -272,9 +248,9 @@ public class SlideAdapterMemoryData extends PagerAdapter {
                         }
                     });
 
-                    byte[] imageArray1  = null;
+                    byte[] imageArray1 = null;
 
-                    if (imageView.getDrawable() !=null ) {
+                    if (imageView.getDrawable() != null) {
 
                         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
@@ -285,7 +261,7 @@ public class SlideAdapterMemoryData extends PagerAdapter {
                     }
 
 
-                    DataMemoryModel updateDataModel = new DataMemoryModel(id,imageArray1,date,desc);
+                    DataMemoryModel updateDataModel = new DataMemoryModel(id, imageArray1, date, desc);
                     memoryArrayList.add(updateDataModel);
                     int pos = viewPager.getCurrentItem();
 
@@ -293,7 +269,6 @@ public class SlideAdapterMemoryData extends PagerAdapter {
                         viewPager.setCurrentItem(pos + 1, true);
                     } else {
                         arrayList = getMemoryArrayList();
-                        Log.d("arrayListm", "onClick: "+arrayList);
                         boolean addSuccess = databaseHelper.AddMemoryData(id, arrayList);
                         loadingDialog.show();
 
@@ -310,7 +285,7 @@ public class SlideAdapterMemoryData extends PagerAdapter {
                                 Intent i = new Intent(context, MainActivity.class);
                                 context.startActivity(i);
                             }
-                        },2000);
+                        }, 2000);
                     }
                 }
             }
@@ -355,7 +330,7 @@ public class SlideAdapterMemoryData extends PagerAdapter {
             }
         };
 
-        handler.postDelayed(runnable,1800);
+        handler.postDelayed(runnable, 1800);
 
     }
 
@@ -382,19 +357,17 @@ public class SlideAdapterMemoryData extends PagerAdapter {
     //change byte array to back to image
     public Bitmap convertByteArrayToBitmap(byte[] byteArray) {
         if (byteArray != null) {
-            Log.d("imageotull", "convertByteArrayToBitmap: "+byteArray.length);
             return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         } else {
-            Log.d("imageotull", "convertByteArrayToBitmap: ");
             return null;
         }
     }
 
     private void ImageChosser() {
-        Intent i =  new Intent();
+        Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
-        ((Activity)context).startActivityForResult(Intent.createChooser(i, "Select Picture"), 100);
+        ((Activity) context).startActivityForResult(Intent.createChooser(i, "Select Picture"), 100);
 
     }
 
@@ -403,12 +376,12 @@ public class SlideAdapterMemoryData extends PagerAdapter {
             // Retrieve the selected image URI and handle it as needed
             selectedImageUri = data.getData();
             try {
-                imageArray = convertImageUriToByteArray(context,selectedImageUri);
+                imageArray = convertImageUriToByteArray(context, selectedImageUri);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             updateCurrentItemWithImage(selectedImageUri);
-        }else{
+        } else {
             Toast.makeText(context, "No image selected", Toast.LENGTH_SHORT).show();
         }
     }
@@ -428,16 +401,13 @@ public class SlideAdapterMemoryData extends PagerAdapter {
             layout.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
-    public ArrayList<DataMemoryModel> getMemoryArrayList(){
+
+    public ArrayList<DataMemoryModel> getMemoryArrayList() {
         return memoryArrayList;
-    }
-
-
-    public ArrayList<DataMemoryModelView> getMemoryViewArrayList(){
-        return memoryViewArrayList;
     }
 }
