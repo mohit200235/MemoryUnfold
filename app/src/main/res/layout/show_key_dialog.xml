@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/backgroud2"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your generic key is this -> \n You need to share this key whom you want to share your memory"
+        android:layout_margin="@dimen/_10sdp"
+        android:textColor="#673AB7"
+        android:textSize="@dimen/_14sdp"
+        android:id="@+id/text_with_key"
+        android:layout_gravity="center"
+        android:gravity="center"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginVertical="@dimen/_8sdp"
+        android:text="DONE"
+        android:id="@+id/back_to_home"
+        />
+
+</LinearLayout>
