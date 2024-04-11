@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,9 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
     RecyclerView recyclerView_saved;
 
     TextView noRecordFound;
-    Dialog loadingDialog;
+    Dialog loadingDialog,showKeyDialog;
+    TextView textView_with_key;
+    Button back_to_home;
     ViewMemoryCardAdapter addMemoryCardAdapter;
     ArrayList<NewMemoryCreateData> newMemoryCreateDataList = new ArrayList<>();
 
@@ -76,11 +79,22 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
 
         //loading Dialog
         loadingDialog = new Dialog(getActivity());
+
         loadingDialog.setContentView(R.layout.custom_loadig_dialog);
         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90);
-        loadingDialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         loadingDialog.setCancelable(false);
+        loadingDialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         loadingDialog.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
+
+        //showKeyDialog setup
+        showKeyDialog = new Dialog(getActivity());
+        showKeyDialog.setContentView(R.layout.show_key_dialog);
+        textView_with_key = showKeyDialog.findViewById(R.id.text_with_key);
+        back_to_home = showKeyDialog.findViewById(R.id.back_to_home);
+        showKeyDialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        showKeyDialog.setCancelable(false);
+        showKeyDialog.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
         return v;
     }
 
@@ -223,10 +237,16 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
             if (is){
                 Toast.makeText(getActivity(), "Data send successfully", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(getActivity(), "Data send successfully 0", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Data send successfully :0", Toast.LENGTH_SHORT).show();
             }
-            Intent i = new Intent(getActivity(), MainActivity.class);
-            getActivity().startActivity(i);
+            textView_with_key.setText("Your generic key is this -> \n "+key+"\n You need to share this key with whom you want to share your memory");
+            showKeyDialog.show();
+            Log.d("key", "sendDataToServerFinalMethod: "+key);
+
+            back_to_home.setOnClickListener(view->{
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                getActivity().startActivity(i);
+            });
         } else {
             loadingDialog.dismiss();
             Toast.makeText(getActivity(), "check internet connections", Toast.LENGTH_SHORT).show();
