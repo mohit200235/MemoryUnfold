@@ -238,7 +238,7 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
             } else {
                 Toast.makeText(getActivity(), "Data send successfully :0", Toast.LENGTH_SHORT).show();
             }
-            textView_with_key.setText("Your generic key is this -> \n " + key + "\n You need to share this key with whom you want to share your memory");
+            textView_with_key.setText(key);
             showKeyDialog.show();
             Log.d("key", "sendDataToServerFinalMethod: " + key);
 

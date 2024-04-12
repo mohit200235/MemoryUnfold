@@ -18,12 +18,36 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your generic key is this -> \n You need to share this key whom you want to share your memory"
-        android:layout_margin="@dimen/_10sdp"
+        android:text="Your generic key is this ->"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:textColor="#673AB7"
+        android:textSize="@dimen/_14sdp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:textColor="#808080"
         android:textSize="@dimen/_14sdp"
         android:id="@+id/text_with_key"
         android:layout_gravity="center"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="You need to share this key with whom you want to share your memory"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:textColor="#673AB7"
+        android:textSize="@dimen/_14sdp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:gravity="center"
         />
 
