@@ -211,19 +211,37 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkAvailable(MainActivity.this)) {
             try {
                 JSONObject memoryOject = new JSONObject((Map) memoryData);
+//                Log.d("TAGkey", "parseMemoryData: " + memoryOject);
                 JSONObject getAllData = memoryOject.getJSONObject("Memories");
                 if (getAllData.has(MyKey)) {
                     JSONObject filteredByKey = getAllData.getJSONObject(MyKey);
+//                    Log.d("TAGkey", "parseMemoryData: "+filteredByKey);
                     SearchDailog.dismiss();
                     List<JSONObject> dataMemoryModelList = new ArrayList<>();
 
-                    JSONArray DataMemoryModels = filteredByKey.getJSONArray("DataMemoryModels");
-                    for (int i = 1; i < DataMemoryModels.length(); i++) {
-                        dataMemoryModelList.add((JSONObject) DataMemoryModels.get(i));
+                    if (filteredByKey.has("DataMemoryModels") && !filteredByKey.isNull("DataMemoryModels")) {
+                        Object dataMemoryModelObject = filteredByKey.get("DataMemoryModels");
+                        if (dataMemoryModelObject instanceof  JSONObject){
+//                            Log.d("TAGkey", "parseMemoryData: jsonObject");
+                            JSONObject DataMemoryModels = filteredByKey.getJSONObject("DataMemoryModels");
+                            dataMemoryModelList.add(DataMemoryModels);
+                            JSONObject NewMemoryCreateData = filteredByKey.getJSONObject("NewMemoryCreateData");
+                            covertJsonIntoDataMemory(dataMemoryModelList, NewMemoryCreateData);
+                        }else if(dataMemoryModelObject instanceof JSONArray) {
+                            JSONArray DataMemoryModels = filteredByKey.getJSONArray("DataMemoryModels");
+                            Log.d("TAGkey", "parseMemoryData: outside for loop top  -> "+DataMemoryModels);
+                            for (int i = 1; i < DataMemoryModels.length(); i++) {
+                                Log.d("TAGkey", "parseMemoryData: inside for loop  -> " + DataMemoryModels.get(i));
+                                if (DataMemoryModels.get(i).equals("null")){
+                                    Log.d("TAGkey", "parseMemoryData: skip");
+                                }
+                                dataMemoryModelList.add((JSONObject) DataMemoryModels.get(i));
+                            }
+                            //get details from this ad call the adapter ad everything ...
+                            JSONObject NewMemoryCreateData = filteredByKey.getJSONObject("NewMemoryCreateData");
+                            covertJsonIntoDataMemory(dataMemoryModelList, NewMemoryCreateData);
+                        }
                     }
-                    //get details from this ad call the adapter ad everythig ...
-                    JSONObject NewMemoryCreateData = filteredByKey.getJSONObject("NewMemoryCreateData");
-                    covertJsonIntoDataMemory(dataMemoryModelList, NewMemoryCreateData);
                 } else {
                     SearchDailog.dismiss();
                     loadingDialog.dismiss();
@@ -243,30 +261,33 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<DataMemoryModelView> dataMemoryModelList = new ArrayList<>();
         String cards = (String) NewMemoryCreateData.get("number");
 //        AtomicInteger imageFetchCounter = new AtomicInteger(jsonList.size());
-
+        Log.d("TAGkey", "covertJsonIntoDataMemory: called");
         String memoryname = (String) NewMemoryCreateData.get("name");
-        int isSend = NewMemoryCreateData.getInt("isSend");
+//        int isSend = NewMemoryCreateData.getInt("isSend");
         int memory_id_ = NewMemoryCreateData.getInt("id");
         for (JSONObject jsonObject : jsonList) {
             try {
                 Iterator<String> keys = jsonObject.keys();
+                Log.d("TAGkey", "covertJsonIntoDataMemory: key +"+ keys + "and jsonObject -> "+ jsonObject);
+
                 while (keys.hasNext()) {
                     String key = keys.next();
-                    JSONObject innerJsonObject = jsonObject.getJSONObject(key);
-
+//                    JSONObject innerJsonObject = jsonObject.getJSONObject(key);
+//                    Log.d("TAGkey", "covertJsonIntoDataMemory: jsonObjects " + innerJsonObject);
                     // Extract values from the inner JSON object
-                    int id = innerJsonObject.getInt("id");
-                    int memoryId = innerJsonObject.getInt("memory_id");
-                    String imageString = innerJsonObject.getString("image");
-                    String date = innerJsonObject.getString("date");
-                    String description = innerJsonObject.getString("description");
+                    int id = jsonObject.getInt("id");
+                    int memoryId = jsonObject.getInt("memory_id");
+                    String imageString = jsonObject.getString("image");
+                    String date = jsonObject.getString("date");
+                    String description = jsonObject.getString("description");
 
                     DataMemoryModelView dataMemoryModelView = new DataMemoryModelView(id, memoryId, imageString, date, description);
 
                     dataMemoryModelList.add(dataMemoryModelView);
                 }
-                handleDataMemoryList(dataMemoryModelList, cards, memory_id_, memoryname,isSend);
+                handleDataMemoryList(dataMemoryModelList, cards, memory_id_, memoryname,1);
             } catch (JSONException e) {
+                Log.d("TAGkey", "covertJsonIntoDataMemory: " +e);
                 loadingDialog.dismiss();
                 e.printStackTrace();
             }

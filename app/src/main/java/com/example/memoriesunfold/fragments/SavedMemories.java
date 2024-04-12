@@ -51,7 +51,6 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
 
     DatabaseHelper databaseHelper;
     RecyclerView recyclerView_saved;
-
     TextView noRecordFound;
     Dialog loadingDialog,showKeyDialog;
     TextView textView_with_key;
