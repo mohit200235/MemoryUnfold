@@ -52,7 +52,7 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
     DatabaseHelper databaseHelper;
     RecyclerView recyclerView_saved;
     TextView noRecordFound;
-    Dialog loadingDialog,showKeyDialog;
+    Dialog loadingDialog, showKeyDialog;
     TextView textView_with_key;
     Button back_to_home;
     ViewMemoryCardAdapter addMemoryCardAdapter;
@@ -138,7 +138,7 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
     @Override
     public void onItemClick(int position) {
         //check for already send the data to server or not ...
-        if(newMemoryCreateDataList.get(position).isSend() == 0) {
+        if (newMemoryCreateDataList.get(position).isSend() == 0) {
             //means not send the data to sever
 
             loadingDialog.show();
@@ -179,7 +179,7 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
             };
 
             handler.postDelayed(runnable, 2000);
-        }else if(newMemoryCreateDataList.get(position).isSend() == 1){
+        } else if (newMemoryCreateDataList.get(position).isSend() == 1) {
             loadingDialog.show();
             Handler handler = new Handler();
             Runnable runnable = new Runnable() {
@@ -192,7 +192,7 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
                     startActivity(intent);
                 }
             };
-            handler.postDelayed(runnable,1200);
+            handler.postDelayed(runnable, 1200);
         }
     }
 
@@ -232,17 +232,17 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
             databaseReference.child("Memories").child(key).setValue(memoryDataMap);
             loadingDialog.dismiss();
             //set the isSend data to 1
-            boolean is = databaseHelper.updateMemory(newMemoryCreateDataList.get(position).getId(),1);
-            if (is){
+            boolean is = databaseHelper.updateMemory(newMemoryCreateDataList.get(position).getId(), 1);
+            if (is) {
                 Toast.makeText(getActivity(), "Data send successfully", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(getActivity(), "Data send successfully :0", Toast.LENGTH_SHORT).show();
             }
-            textView_with_key.setText("Your generic key is this -> \n "+key+"\n You need to share this key with whom you want to share your memory");
+            textView_with_key.setText("Your generic key is this -> \n " + key + "\n You need to share this key with whom you want to share your memory");
             showKeyDialog.show();
-            Log.d("key", "sendDataToServerFinalMethod: "+key);
+            Log.d("key", "sendDataToServerFinalMethod: " + key);
 
-            back_to_home.setOnClickListener(view->{
+            back_to_home.setOnClickListener(view -> {
                 Intent i = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(i);
             });
@@ -265,37 +265,45 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
 
     public void tryFirebaseSaveImage(int position) {
         int memory_id = newMemoryCreateDataList.get(position).getId();
-        List<String> downloadUrlArray = new ArrayList<>();
+        Map<Integer, String> downloadUrlMap = new HashMap<>(); // Use a map instead of a list
         List<DataMemoryModel> dataMemoryModelList = databaseHelper.getDataByMemoryId(memory_id);
         if (isNetworkAvailable(getActivity())) {
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference("data1").child("Images/").child(String.valueOf(Math.random()));
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("data1").child("Images/");
+
             for (int i = 0; i < dataMemoryModelList.size(); i++) {
                 if (dataMemoryModelList.get(i).getImage() != null) {
                     Uri imageUri = convertByteArrayToUri(getActivity(), dataMemoryModelList.get(i).getImage());
                     int main_id = dataMemoryModelList.get(i).getId();
                     StorageReference ref = storageReference.child(String.valueOf(main_id));
                     UploadTask uploadTask = ref.putFile(imageUri);
+                    final int currentIndex = i; // Keep track of current index
                     uploadTask.addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
-                                ref.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    if (uri == null) {
-                                        downloadUrlArray.add("null1");
-                                    } else {
-
-                                        downloadUrlArray.add(uri.toString());
-                                    }
-                                    if (downloadUrlArray.size() == dataMemoryModelList.size()) {
-                                        sendDataToServerFinalMethod(position, downloadUrlArray);
-                                    }
-                                    if (getActivity() != null) {
-                                        Toast.makeText(getActivity(), "success:", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+                            if (uri == null) {
+                                downloadUrlMap.put(currentIndex, "null1"); // Associate index with URL
+                            } else {
+                                downloadUrlMap.put(currentIndex, uri.toString()); // Associate index with URL
                             }
-                    );
+                            if (downloadUrlMap.size() == dataMemoryModelList.size()) {
+                                List<String> downloadUrlList = new ArrayList<>();
+                                for (int j = 0; j < dataMemoryModelList.size(); j++) {
+                                    downloadUrlList.add(downloadUrlMap.get(j)); // Create a list in correct order
+                                }
+                                sendDataToServerFinalMethod(position, downloadUrlList);
+                            }
+                            if (getActivity() != null) {
+                                Toast.makeText(getActivity(), "success:", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
                 } else {
-                    downloadUrlArray.add("null");
-                    if (downloadUrlArray.size() == dataMemoryModelList.size()) {
-                        sendDataToServerFinalMethod(position, downloadUrlArray);
+                    downloadUrlMap.put(i, "null");
+                    if (downloadUrlMap.size() == dataMemoryModelList.size()) {
+                        List<String> downloadUrlList = new ArrayList<>();
+                        for (int j = 0; j < dataMemoryModelList.size(); j++) {
+                            downloadUrlList.add(downloadUrlMap.get(j)); // Create a list in correct order
+                        }
+                        sendDataToServerFinalMethod(position, downloadUrlList);
                     }
                 }
             }
@@ -304,6 +312,51 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
             Toast.makeText(getActivity(), "check internet connections", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+//public void tryFirebaseSaveImage(int position) {
+//    int memory_id = newMemoryCreateDataList.get(position).getId();
+//    List<String> downloadUrlArray = new ArrayList<>();
+//    List<DataMemoryModel> dataMemoryModelList = databaseHelper.getDataByMemoryId(memory_id);
+//    if (isNetworkAvailable(getActivity())) {
+//        StorageReference storageReference = FirebaseStorage.getInstance().getReference("data1").child("Images/");
+//
+//        for (int i = 0; i < dataMemoryModelList.size(); i++) {
+//            final int currentIndex = i;
+//            if (dataMemoryModelList.get(i).getImage() != null) {
+//                Uri imageUri = convertByteArrayToUri(getActivity(), dataMemoryModelList.get(i).getImage());
+//                int main_id = dataMemoryModelList.get(i).getId();
+//                StorageReference ref = storageReference.child(String.valueOf(main_id));
+//                UploadTask uploadTask = ref.putFile(imageUri);
+//                int finalI = i;
+//                uploadTask.addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+//                    ref.getDownloadUrl().addOnSuccessListener(uri -> {
+//                        if (uri == null) {
+//                            downloadUrlArray.add(currentIndex, "null1");
+//                        } else {
+//                            Log.d("TAGkey1", "tryFirebaseSaveImage: "+currentIndex +"i-?>?"+ finalI);
+//                            downloadUrlArray.add(currentIndex, uri.toString());
+//                        }
+//                        if (downloadUrlArray.size() == dataMemoryModelList.size()) {
+//                            sendDataToServerFinalMethod(position, downloadUrlArray);
+//                        }
+//                        if (getActivity() != null) {
+//                            Toast.makeText(getActivity(), "success:", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                });
+//            } else {
+//                downloadUrlArray.add(i, "null");
+//                if (downloadUrlArray.size() == dataMemoryModelList.size()) {
+//                    sendDataToServerFinalMethod(position, downloadUrlArray);
+//                }
+//            }
+//        }
+//    } else {
+//        loadingDialog.dismiss();
+//        Toast.makeText(getActivity(), "check internet connections", Toast.LENGTH_SHORT).show();
+//    }
+//}
 
     // Method to check internet connectivity
     public boolean isNetworkAvailable(Context context) {
