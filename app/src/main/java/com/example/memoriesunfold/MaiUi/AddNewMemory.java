@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.memoriesunfold.Database.DatabaseHelper;
 import com.example.memoriesunfold.R;
@@ -38,10 +39,11 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
     ArrayList<Integer> CardsNumbers = new ArrayList<>();
 
     ImageView createNewMemoryIcon;
-    EditText getNameOFMemoryEditText;
+//    EditText getNameOFMemoryEditText;
     Button CreateNewMemoryButton;
-    EditText NumberOfCardsEditText;
+//    EditText NumberOfCardsEditText;
     DatabaseHelper databaseHelper;
+    TextView noMemory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
         createNewMemoryIcon = findViewById(R.id.CreateNew);
         recyclerViewAddMemory.setLayoutManager(new LinearLayoutManager(this));
         databaseHelper = new DatabaseHelper(this);
+        noMemory = findViewById(R.id.NoMemory);
 
         Toolbar toolbar = findViewById(R.id.toolbar1);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -87,8 +90,8 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
         Name_of_frame.setCancelable(true);
         Name_of_frame.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
 
-        getNameOFMemoryEditText = Name_of_frame.findViewById(R.id.Name1OfMemoryEditText);
-        NumberOfCardsEditText = Name_of_frame.findViewById(R.id.Name2OfMemoryEditText);
+        EditText getNameOFMemoryEditText = Name_of_frame.findViewById(R.id.Name1OfMemoryEditText);
+        EditText NumberOfCardsEditText = Name_of_frame.findViewById(R.id.Name2OfMemoryEditText);
         CreateNewMemoryButton = Name_of_frame.findViewById(R.id.CreateMemory);
 
 
@@ -124,6 +127,8 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
                     addMemoryCardAdapter = new AddMemoryCardAdapter(AddNewMemory.this, newMemoryCreateDataList);
                     recyclerViewAddMemory.setAdapter(addMemoryCardAdapter);
                     addMemoryCardAdapter.setOnItemClickListener(AddNewMemory.this);
+                    getNameOFMemoryEditText.setText("");
+                    NumberOfCardsEditText.setText("");
                     Name_of_frame.dismiss();
                 } else {
                     loadingDialog.dismiss();
@@ -165,6 +170,7 @@ public class AddNewMemory extends AppCompatActivity implements AddMemoryCardAdap
 
             // Update the adapter only if new data is available
             if (!updatedList.isEmpty()) {
+                noMemory.setVisibility(View.GONE);
                 newMemoryCreateDataList.clear(); // Clear the old list
                 newMemoryCreateDataList.addAll(updatedList); // Update with new data
 

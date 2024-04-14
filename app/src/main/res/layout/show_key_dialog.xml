@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
 
     <ImageView
@@ -12,52 +12,72 @@
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginVertical="@dimen/_10sdp"
         android:scaleType="fitXY"
-        android:src="@drawable/backgroud2"
-        />
+        android:src="@drawable/backgroud2" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your generic key is this ->"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:textColor="#673AB7"
-        android:textSize="@dimen/_14sdp"
-        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_6sdp"
         android:gravity="center"
-        />
+        android:text="Your memory has succesfully saved  \nYour private key is :"
+        android:textColor="#673AB7"
+        android:textSize="@dimen/_14sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_weight="1"
+        android:background="#85808080"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/_10sdp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/text_with_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.85"
+            android:gravity="center"
+            android:text="JHUWGHIWJGDJIHUGYVHBJ"
+            android:textStyle="italic"
+            android:textColor="@color/white"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:clickable="true"
+            android:id="@+id/shareIcon"
+            android:layout_weight="0.15"
+            android:src="@drawable/baseline_share_24" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textIsSelectable="true"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:textColor="#808080"
-        android:textSize="@dimen/_14sdp"
-        android:id="@+id/text_with_key"
         android:layout_gravity="center"
-        android:gravity="center"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="You need to share this key with whom you want to share your memory"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        android:textColor="#673AB7"
-        android:textSize="@dimen/_14sdp"
-        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_6sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:gravity="center"
-        />
+        android:text="You need to share this key with whom you want to share your precious memory"
+        android:textColor="#673AB7"
+        android:textSize="@dimen/_14sdp" />
 
     <Button
+        android:id="@+id/back_to_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginVertical="@dimen/_8sdp"
-        android:text="DONE"
-        android:id="@+id/back_to_home"
-        />
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:text="DONE" />
 
 </LinearLayout>

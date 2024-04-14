@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
     Dialog loadingDialog, showKeyDialog;
     TextView textView_with_key;
     Button back_to_home;
+    ImageView shareIcon;
     ViewMemoryCardAdapter addMemoryCardAdapter;
     ArrayList<NewMemoryCreateData> newMemoryCreateDataList = new ArrayList<>();
 
@@ -90,10 +92,22 @@ public class SavedMemories extends Fragment implements ViewMemoryCardAdapter.OnI
         showKeyDialog.setContentView(R.layout.show_key_dialog);
         textView_with_key = showKeyDialog.findViewById(R.id.text_with_key);
         back_to_home = showKeyDialog.findViewById(R.id.back_to_home);
+        shareIcon = showKeyDialog.findViewById(R.id.shareIcon);
         showKeyDialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         showKeyDialog.setCancelable(false);
         showKeyDialog.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
+
+        shareIcon.setOnClickListener(view->{
+            if (!textView_with_key.getText().toString().trim().isEmpty()){
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT , "https://www.memoriesunfold.com/key=?key="+textView_with_key.getText().toString());
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 

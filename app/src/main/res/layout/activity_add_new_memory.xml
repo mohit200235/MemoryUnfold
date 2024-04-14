@@ -42,4 +42,17 @@
         android:layout_below="@+id/toolbar1"
         android:id="@+id/recyclerAdd"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:visibility="visible"
+        android:id="@+id/NoMemory"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Memory, create new by clicking icon on Top"
+        android:textSize="@dimen/_14sdp"
+        android:layout_marginHorizontal="@dimen/_40sdp"
+        android:gravity="center_horizontal"
+        android:textColor="#808080"/>
+
+
 </RelativeLayout>

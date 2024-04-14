@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -44,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper databaseHelper;
     String key = "";
+    EditText EnterKey;
+    Button searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         SearchDailog.setCancelable(true);
         SearchDailog.getWindow().getAttributes().windowAnimations = R.style.AlertDialogAnimation;
 
-        EditText EnterKey = SearchDailog.findViewById(R.id.EnterKey);
-        Button searchButton = SearchDailog.findViewById(R.id.SearchButton);
+        EnterKey = SearchDailog.findViewById(R.id.EnterKey);
+        searchButton = SearchDailog.findViewById(R.id.SearchButton);
 
         searchButton.setOnClickListener(view -> {
             if (EnterKey.getText().toString().trim() != null && !EnterKey.getText().toString().trim().isEmpty()) {
@@ -142,6 +146,23 @@ public class MainActivity extends AppCompatActivity {
             binding.bottomNavigationView.getMenu().findItem(R.id.Me).setChecked(true);
             Log.d("TAG", "onCreate: " + modelArrayList);
 
+        }
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData();
+
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+
+            String url = data.toString();
+            Uri uri = Uri.parse(url);
+            String key = uri.getQueryParameter("key");
+            Log.d("TAG", "onCreate: URL - " + url + "key is 0> " + key );
+
+            if (key !=null){
+                SearchDailog.show();
+                EnterKey.setText(key);
+            }
         }
     }
 
@@ -305,8 +326,10 @@ public class MainActivity extends AppCompatActivity {
         boolean addSuccess = databaseHelper.AddMemoryDataWithImageUrl((int) l, dataMemoryModelViewList);
         if (addSuccess) {
             Toast.makeText(this, "Succesfully Added ", Toast.LENGTH_SHORT).show();
+            SearchDailog.dismiss();
         } else {
             Toast.makeText(this, "error occrred", Toast.LENGTH_SHORT).show();
+            SearchDailog.dismiss();
         }
         Intent intent = new Intent(this, MemoryData.class);
         intent.putExtra("card", cards);
@@ -326,6 +349,15 @@ public class MainActivity extends AppCompatActivity {
             return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+
+
     }
 }
 
