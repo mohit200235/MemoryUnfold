@@ -6,6 +6,12 @@
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/gradle.xml
+/.idea/.name
+/.idea/appInsightsSettings.xml
+/.idea/migrations.xml
+/.idea/vcs.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
