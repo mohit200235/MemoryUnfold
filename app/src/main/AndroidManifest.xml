@@ -39,6 +39,7 @@
             <intent-filter
                 android:autoVerify="true"
                 android:icon="@mipmap/app_icon"
+                android:priority="999"
                 android:label="@string/app_name_intent">
                 <action android:name="android.intent.action.VIEW" />
 
